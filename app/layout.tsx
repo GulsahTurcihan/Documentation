@@ -2,15 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
-import Container from "@/components/global/Container";
 import { AppSidebar } from "@/components/sidebar/AppSidebar";
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
+import Provider from "./provider";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,22 +32,24 @@ export default async function RootLayout({
   const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SidebarProvider defaultOpen={defaultOpen}>
-          <div className="relative min-h-screen flex flex-col">
-            <Navbar />
-            <div className="flex flex-1">
-              <AppSidebar />
-              <SidebarTrigger className="ml-3 mt-0 hidden lg:block lg:text-4xl" />
-              <main className="flex-auto overflow-auto lg:p-16 p-2 m-4 bg-sidebar lg:mt-[2rem] lg:ml-[13rem] lg:mr-[14rem] border border-sidebar-border shadow-sm">
-                {children}
-              </main>
+      <ClerkProvider>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <SidebarProvider defaultOpen={defaultOpen}>
+            <div className="relative min-h-screen flex flex-col w-full">
+              <Navbar />
+              <div className="flex flex-auto w-full">
+                <AppSidebar />
+                <SidebarTrigger className="hidden sticky top-0 md:block lg:block ml-3 mt-0" />
+                <main className="flex flex-col w-full bg-sidebar p-16 lg:ml-24 lg:mr-[9rem] md:ml-4 md:mr-12 mx-2 my-4 rounded-lg border border-sidebar-border shadow-sm">
+                  <Provider> {children}</Provider>
+                </main>
+              </div>
             </div>
-          </div>
-        </SidebarProvider>
-      </body>
+          </SidebarProvider>
+        </body>
+      </ClerkProvider>
     </html>
   );
 }

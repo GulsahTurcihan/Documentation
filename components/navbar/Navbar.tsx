@@ -56,30 +56,29 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-end items-center text-md font-thin text-sidebar-foreground lg:ml-[31.5rem] lg:mr-[14rem] lg:mt-8 mt-2">
+    <nav className="flex justify-end items-center text-md font-thin text-sidebar-foreground lg:ml-[31.5rem] lg:mr-[8rem] lg:mt-6 my-6">
       <NavigationMenu>
+        <NavigationMenuItem className="lg:hidden md:hidden flex justify-start items-start">
+          <NavigationMenuTrigger>
+            <SquareMenu />
+          </NavigationMenuTrigger>
+          <NavigationMenuContent className="bg-sidebar">
+            <ul className="grid w-[200px] gap-4 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              {links.map((link) => (
+                <li key={link.label}>
+                  <a
+                    className="flex items-center gap-2 hover:bg-sidebar-accent p-2 rounded-md"
+                    href={link.href}
+                  >
+                    {link.icon}
+                    <span className="text-sm">{link.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
         <NavigationMenuList>
-          <NavigationMenuItem className="lg:hidden">
-            <NavigationMenuTrigger>
-              <SquareMenu />
-            </NavigationMenuTrigger>
-            <NavigationMenuContent className="bg-sidebar">
-              <ul className="grid w-[200px] gap-4 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      className="flex items-center gap-2 hover:bg-sidebar-accent p-2 rounded-md"
-                      href={link.href}
-                    >
-                      {link.icon}
-                      <span className="text-sm">{link.label}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
           <NavigationMenuItem>
             <NavigationMenuTrigger className="">
               Getting started

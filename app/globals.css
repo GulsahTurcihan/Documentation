@@ -26,3 +26,29 @@
   }
 
 }
+
+@layer components {
+  .p-span {
+    @apply text-xs font-extralight text-gray-600;
+  }
+
+  .p-description {
+    @apply text-sm text-sidebar-foreground border-b border-sidebar-border pb-2;
+  }
+
+  .p-title {
+    @apply text-[0.9rem] font-medium;
+  }
+
+  .tag {
+    @apply text-xs mt-2 bg-sidebar-border px-[4px] py-[1.5px] mr-2 rounded-sm;
+  }
+
+  .article {
+    @apply flex flex-col gap-2 w-full lg:px-14 md:px-8 px-4 text-sidebar-foreground;
+  }
+
+  .form-layout {
+    @apply grid grid-cols-1 lg:grid-cols-3 gap-[0.25rem] border-b border-sidebar-border pb-2
+  }
+}

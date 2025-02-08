@@ -1,24 +1,34 @@
 import { Home, Package, List, Plus, Search, Edit, Trash } from "lucide-react";
 
+import getIcon from "@/public/getIcon.svg";
+import postIcon from "@/public/postIcon.svg";
+import putIcon from "@/public/putIcon.svg";
+import deleteIcon from "@/public/deleteIcon.svg";
+import Image from "next/image";
+
 type NavLink = {
   label: string;
   href: string;
   icon: React.ReactNode;
-  tag?: string;
+  tag?: React.ReactNode;
 };
 
-export const getStyle = (tag: string) => {
+export const getStyle = (tag: string): React.ReactNode => {
   switch (tag) {
     case "GET":
-      return "bg-green-600 text-white px-[0.5rem] rounded-full text-[0.5rem] tracking-wider ";
+      return <Image src={getIcon} alt="GET" width={48} height={48} priority />;
     case "POST":
-      return "bg-blue-600 text-white px-[0.5rem] rounded-full text-[0.5rem] tracking-wider";
+      return (
+        <Image src={postIcon} alt="POST" width={48} height={48} priority />
+      );
     case "PUT":
-      return "bg-yellow-600 text-white px-[0.5rem] rounded-full text-[0.5rem] tracking-wider";
+      return <Image src={putIcon} alt="PUT" width={48} height={48} priority />;
     case "DELETE":
-      return "bg-red-600 text-white px-[0.5rem] rounded-full text-[0.5rem] tracking-wider";
+      return (
+        <Image src={deleteIcon} alt="DELETE" width={48} height={48} priority />
+      );
     default:
-      return "bg-gray-600 text-white px-[0.5rem] rounded-full text-[0.5rem] tracking-wider";
+      return <Image src={getIcon} alt="GET" width={48} height={48} priority />;
   }
 };
 
@@ -29,17 +39,17 @@ const links: NavLink[] = [
     icon: <Home className="h-4 w-4" />,
   },
   {
+    label: "Product Model",
+    href: "/productModel",
+    icon: <Package className="h-4 w-4" />,
+  },
+  {
     label: "Products List",
     href: "/listProducts",
     icon: <List className="h-4 w-4" />,
     tag: "GET",
   },
-  {
-    label: "Product Model",
-    href: "/productModel",
-    icon: <Package className="h-4 w-4" />,
-    tag: "GET",
-  },
+
   {
     label: "Create Product",
     href: "/createProduct",
