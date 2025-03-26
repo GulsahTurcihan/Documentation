@@ -51,5 +51,3 @@ const GeneratedCodeBlock = ({
     </div>
   );
 };
-
-export default GeneratedCodeBlock;
