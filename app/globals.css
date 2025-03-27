@@ -33,7 +33,7 @@
   }
 
   .p-description {
-    @apply text-sm text-sidebar-foreground border-b border-sidebar-border pb-2;
+    @apply text-sm text-sidebar-foreground pb-2;
   }
 
   .p-title {
@@ -49,6 +49,15 @@
   }
 
   .form-layout {
-    @apply grid grid-cols-1 lg:grid-cols-3 gap-[0.25rem] border-b border-sidebar-border pb-2
+    @apply grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-[0.25rem] border-b border-sidebar-border pb-2
+  }
+
+  .page-layout {
+    @apply grid grid-cols-1 md:grid-cols-1 lg:grid-cols-5 gap-4 flex-grow
+  }
+
+  .code-container {
+    @apply max-h-96 overflow-auto
+    /* Yatay kaydırma çubuğu ekler */
   }
 }

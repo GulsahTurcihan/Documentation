@@ -7,6 +7,10 @@ export enum PriceCurrency {
   TL = "TRY",
 }
 
+export enum MediaTypes {
+  image = "image",
+}
+
 export enum StockStatus {
   inStock = "inStock",
   outOfStock = "outOfStock",
@@ -40,7 +44,7 @@ export interface PriceData {
 
 export interface MediaType {
   url: string;
-  mediaType: "image";
+  mediaType: MediaTypes;
   id: string;
   placement: number;
 }
@@ -50,8 +54,8 @@ interface Variation {
   title: string;
 }
 
-interface Selection {
-  id: string;
+export interface Selection {
+  selectionId: string;
   title: string;
 }
 
@@ -107,8 +111,8 @@ export interface ProductListParams {
   productType?: ProductType;
   shippingPayer?: ShippingPayer;
   stockStatus?: StockStatus;
-  categoryId?: string[];
-  selectionId?: string[];
+  categoryId?: string;
+  selectionId?: string;
   discount?: boolean;
   customListing?: boolean;
   limit?: number;
@@ -129,13 +133,45 @@ export const priceDataSchema = z.object({
 
 export type PriceDataType = z.infer<typeof priceDataSchema>;
 
+export const optionSchema = z.object({
+  id: z.string().min(2, { message: "id must be at least 2 characters" }),
+  title: z.string().min(2, { message: "title must be at least 2 characters" }),
+  price: z.string().nonempty("Price data cannot be empty"),
+});
+
+export const variationSchema = z.object({
+  id: z.string().min(2, { message: "id must be at least 2 characters" }),
+  title: z.string().min(2, { message: "title must be at least 2 characters" }),
+});
+
+export const selectionSchema = z.object({
+  id: z.string().min(2, { message: "id must be at least 2 characters" }),
+  title: z.string().min(2, { message: "title must be at least 2 characters" }),
+  selectionId: z
+    .string()
+    .min(2, { message: "selectionId must be at least 2 characters" }),
+});
+
+export const variantSchema = z.object({
+  variations: z.array(variationSchema),
+  selections: z.array(selectionSchema),
+  stockStatus: z.nativeEnum(StockStatus),
+  stockQuantity: z.coerce.number({
+    message: "Stock quantity must be number",
+  }),
+});
+
+export type VariantType = z.infer<typeof variantSchema>;
+
 const imageUrlRegex = /\.(jpeg|jpg|gif|png|bmp|svg|webp)$/i;
 
 export const mediaSchema = z.object({
   url: z.string().url().regex(imageUrlRegex, "URL must point to an image file"),
   mediaType: z.literal("image"),
   id: z.string().min(2, { message: "id must be at least 2 characters" }),
-  placement: z.number().int(),
+  placement: z.coerce.number({
+    message: "Placement must be number",
+  }),
 });
 
 export type MediaSchemaType = z.infer<typeof mediaSchema>;
@@ -190,8 +226,8 @@ export const createAndEditProductSchema = z.object({
       message: "description must be at least 10 character",
     })
     .optional(),
-  tags: z.string().optional(),
-  category: z.string().optional(),
+  tags: z.string().array().optional(),
+  category: z.string().array().optional(),
   customNote: z.string().optional(),
 
   singleOption: z.boolean().nullable(),
@@ -201,17 +237,41 @@ export const createAndEditProductSchema = z.object({
   dateUpdated: z.string().datetime({ local: true }).optional(),
   url: z.string().url().optional(),
 
-  placement: z.number().min(1).optional(),
-  stockQuantity: z.number().optional(),
-  placementScore: z.number().optional(),
-  dispatchDuration: z.number().min(1).max(3).optional(),
+  placement: z.coerce
+    .number()
+    .min(1, { message: "Placement must be at least 1" })
+    .max(5, { message: "Placement must be at most 5" })
+    .optional(),
+  stockQuantity: z.coerce
+    .number({
+      message: "Stock quantity must be number",
+    })
+    .optional(),
+  placementScore: z.coerce
+    .number()
+    .min(1, { message: "Page number must be at least 1" })
+    .default(1),
 
-  type: z.nativeEnum(ProductType),
+  dispatchDuration: z.coerce
+    .number()
+    .min(1, { message: "Placement must be at least 1" })
+    .max(3, { message: "Placement must be at most 3" })
+    .optional(),
+
+  types: z.nativeEnum(ProductType),
   shippingPayer: z.nativeEnum(ShippingPayer),
   stockStatus: z.nativeEnum(StockStatus),
   sort: z.nativeEnum(ProductSort),
 
   priceData: priceDataSchema,
+  media: z.array(mediaSchema),
+  variants: z.array(variantSchema).optional(),
+  options: z
+    .array(optionSchema)
+    .max(3, {
+      message: "There can be a maximum of 3 options.",
+    })
+    .optional(),
 });
 
 export type CreateAndEditProductType = z.infer<

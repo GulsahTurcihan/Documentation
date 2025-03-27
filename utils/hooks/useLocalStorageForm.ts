@@ -45,11 +45,10 @@ export const useLocalStorageForm = <T extends SchemaType>(
     },
   });
 
-  const debouncedSaveToLocalStorage = useMemo(
-    () =>
-      debounce((values: z.infer<T>) => {
-        mutate(values);
-      }, 300),
+  const debouncedSaveToLocalStorage = useCallback(
+    debounce((values: z.infer<T>) => {
+      mutate(values);
+    }, 300),
     [mutate]
   );
 
@@ -61,6 +60,13 @@ export const useLocalStorageForm = <T extends SchemaType>(
     { id: number; value: string; isCollapsed: boolean }[]
   >([]);
 
+  useEffect(() => {
+    const storedData = localStorage.getItem(key);
+    if (storedData) {
+      setCards(JSON.parse(storedData));
+    }
+  }, [key]);
+
   const handleInputChange = useCallback(
     (id: number, newValue: string) => {
       setCards((prevCards) => {
@@ -71,7 +77,7 @@ export const useLocalStorageForm = <T extends SchemaType>(
           key,
           updatedCards.map((card) => card.value) as PathValue<
             z.infer<T>,
-            Path<z.infer<T>>
+            typeof key
           >
         );
         return updatedCards;

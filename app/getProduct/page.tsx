@@ -1,14 +1,18 @@
+import GetProductComponent from "@/components/GetProductComponent";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+
 function page() {
+  const queryClient = new QueryClient();
   return (
-    <article className="flex flex-col gap-4">
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quod
-        temporibus alias magni ea pariatur sunt placeat porro totam commodi!
-        Aliquam, praesentium fuga aperiam eaque porro veritatis beatae error
-        excepturi unde earum molestiae. Libero eaque recusandae quae distinctio?
-        Fugiat, est expedita?
-      </p>
-    </article>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="article">
+        <GetProductComponent />
+      </div>
+    </HydrationBoundary>
   );
 }
 export default page;

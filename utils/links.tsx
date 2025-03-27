@@ -1,9 +1,9 @@
 import { Home, Package, List, Plus, Search, Edit, Trash } from "lucide-react";
 
-import getIcon from "@/public/getIcon.svg";
-import postIcon from "@/public/postIcon.svg";
-import putIcon from "@/public/putIcon.svg";
-import deleteIcon from "@/public/deleteIcon.svg";
+import getIcon from "@/public/icons/getIcon.svg";
+import postIcon from "@/public/icons/postIcon.svg";
+import putIcon from "@/public/icons/putIcon.svg";
+import deleteIcon from "@/public/icons/deleteIcon.svg";
 import Image from "next/image";
 
 type NavLink = {
@@ -36,42 +36,42 @@ const links: NavLink[] = [
   {
     label: "Home",
     href: "/",
-    icon: <Home className="h-4 w-4" />,
+    icon: <Home className="h-6 w-6" />,
   },
   {
     label: "Product Model",
     href: "/productModel",
-    icon: <Package className="h-4 w-4" />,
+    icon: <Package className="h-6 w-6" />,
   },
   {
     label: "Products List",
     href: "/listProducts",
-    icon: <List className="h-4 w-4" />,
+    icon: <List className="h-6 w-6" />,
     tag: "GET",
   },
 
   {
     label: "Create Product",
     href: "/createProduct",
-    icon: <Plus className="h-4 w-4" />,
+    icon: <Plus className="h-6 w-6" />,
     tag: "POST",
   },
   {
     label: "Get Product",
     href: "/getProduct",
-    icon: <Search className="h-4 w-4" />,
+    icon: <Search className="h-6 w-6" />,
     tag: "GET",
   },
   {
     label: "Update Product",
     href: "/updateProduct",
-    icon: <Edit className="h-4 w-4" />,
+    icon: <Edit className="h-6 w-6" />,
     tag: "PUT",
   },
   {
     label: "Delete Product",
     href: "/deleteProduct",
-    icon: <Trash className="h-4 w-4" />,
+    icon: <Trash className="h-6 w-6" />,
     tag: "DELETE",
   },
 ];

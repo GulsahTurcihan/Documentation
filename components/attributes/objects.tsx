@@ -6,7 +6,7 @@ import { Variants } from "./variants";
 
 export const Objects = () => {
   return (
-    <div className="flex flex-col gap-2 border border-sidebar-border p-4 rounded-md">
+    <div className="flex flex-col gap-2 border border-sidebar-border p-4 rounded-md bg-sidebar">
       <h3 className="text-xs font-normal border-b border-sidebar-border pb-2 text-sidebar-ring">
         object
       </h3>

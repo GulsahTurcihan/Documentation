@@ -13,13 +13,17 @@ import { Control } from "react-hook-form";
 import { Input } from "../ui/input";
 import clsx from "clsx";
 
+// Custom Form Select (Tekil Seçim)
+
 type CustomFormSelectProps = {
   name: string;
   control?: Control<any>;
   items: { label: string; value: any }[];
   labelText?: string;
-  value?: any; // 🟢 Seçili değeri belirlemek için
-  onChange?: (value: any) => void; // 🟢 Seçim değiştiğinde çalışacak fonksiyon
+  value?: any;
+  onChange?: (value: any) => void;
+  id?: string;
+  className?: string;
 };
 
 export const CustomFormSelect = ({
@@ -28,58 +32,59 @@ export const CustomFormSelect = ({
   items,
   value,
   onChange,
+  id,
+  className,
 }: CustomFormSelectProps) => {
-  if (!control) {
-    // 🟢 Eğer `control` yoksa `useState` ile çalışıyor demektir
-    return (
-      <FormItem>
-        <Select onValueChange={onChange} defaultValue={value}>
-          <FormControl>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-          </FormControl>
-          <SelectContent>
-            {items.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </FormItem>
-    );
-  }
-
-  // 🟢 Eğer `control` varsa, React Hook Form ile çalıştır
-  return (
+  return control ? (
     <FormField
       control={control}
       name={name}
       render={({ field, fieldState }) => (
         <FormItem>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select onValueChange={field.onChange} value={field.value ?? ""}>
             <FormControl>
               <SelectTrigger>
-                <SelectValue />
+                <SelectValue placeholder="Select an option" />
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {items.map((item) => (
-                <SelectItem key={item.value} value={item.value}>
+              {(items ?? []).map((item) => (
+                <SelectItem
+                  key={item.value}
+                  value={item.value}
+                  id={id}
+                  className={className}
+                >
                   {item.label}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-
-          {/* Hata mesajını burada doğrudan gösteriyoruz */}
           <FormMessage>{fieldState.error?.message}</FormMessage>
         </FormItem>
       )}
     />
+  ) : (
+    <FormItem>
+      <Select onValueChange={onChange} value={value}>
+        <FormControl>
+          <SelectTrigger>
+            <SelectValue placeholder="Select an option" />
+          </SelectTrigger>
+        </FormControl>
+        <SelectContent>
+          {items.map((item) => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </FormItem>
   );
 };
+
+// Custom Boolean Select (true/false)
 
 export const CustomFormBooleanSelect = ({
   name,
@@ -93,12 +98,8 @@ export const CustomFormBooleanSelect = ({
       render={({ field, fieldState }) => (
         <FormItem>
           <Select
-            onValueChange={(value) => {
-              let newValue =
-                value === "true" ? true : value === "false" ? false : "";
-              field.onChange(newValue);
-            }}
-            defaultValue={String(field.value)}
+            value={field.value !== undefined ? String(field.value) : "false"}
+            onValueChange={(value) => field.onChange(value === "true")}
           >
             <FormControl>
               <SelectTrigger>
@@ -113,8 +114,6 @@ export const CustomFormBooleanSelect = ({
               ))}
             </SelectContent>
           </Select>
-
-          {/* Hata mesajını burada doğrudan gösteriyoruz */}
           <FormMessage>{fieldState.error?.message}</FormMessage>
         </FormItem>
       )}
@@ -122,16 +121,22 @@ export const CustomFormBooleanSelect = ({
   );
 };
 
+// Custom Form Input Field
 type CustomFormFieldProps = {
   name: string;
   control: Control<any>;
   className?: string;
+  id?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onUpdate?: (data: any) => void;
 };
 
 export const CustomFormField = ({
   name,
   control,
   className,
+  onChange,
 }: CustomFormFieldProps) => {
   return (
     <FormField
@@ -142,18 +147,23 @@ export const CustomFormField = ({
           <FormControl>
             <Input
               {...field}
+              onChange={(e) => {
+                onChange && onChange(e);
+                field.onChange(e);
+              }}
+              id={name}
+              value={field.value ?? ""}
               className={clsx(
-                "p-2 border rounded-md", // Varsayılan stiller
+                "p-2 border rounded-md",
                 fieldState.invalid
-                  ? "border-red-500" // Hatalı ise kırmızı border
+                  ? "border-red-500"
                   : field.value
-                  ? "border-green-500" // Doğru ise yeşil border
+                  ? "border-green-500"
                   : "border-gray-300",
-                className // Kullanıcının eklemek istediği ek stiller
+                className
               )}
             />
           </FormControl>
-          {/* Hata mesajını burada gösteriyoruz */}
           <FormMessage>{fieldState.error?.message}</FormMessage>
         </FormItem>
       )}
