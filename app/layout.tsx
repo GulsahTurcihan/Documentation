@@ -8,7 +8,6 @@ import { cookies } from "next/headers";
 import Provider from "./provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { AsideProvider } from "@/app/provider";
-import { FormProvider } from "@/components/ui/form";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

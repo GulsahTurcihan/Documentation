@@ -1,4 +1,4 @@
-import { CalendarDays, Tag } from "lucide-react";
+import { Tag } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {

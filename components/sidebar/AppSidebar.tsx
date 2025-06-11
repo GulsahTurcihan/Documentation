@@ -1,7 +1,5 @@
 "use client";
 
-import { GalleryVerticalEnd } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,

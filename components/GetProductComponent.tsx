@@ -3,7 +3,6 @@
 import { FormProvider, useForm } from "react-hook-form";
 import {
   CreateAndEditProductType,
-  ProductType,
   createAndEditProductSchema,
 } from "@/utils/types";
 import response200 from "@/public/icons/response-200.svg";

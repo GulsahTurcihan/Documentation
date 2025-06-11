@@ -6,7 +6,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { SquareMenu } from "lucide-react";
 import links from "@/utils/links";

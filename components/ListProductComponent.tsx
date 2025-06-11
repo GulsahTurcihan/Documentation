@@ -39,7 +39,6 @@ import ArrayOfStringField from "./forms/ArrayOfStringField";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import LanguageSelector from "./prism/LanguageSelector";
-import LanguageButtons2 from "./prism/test";
 
 function mapToSelectItems<T>(values: T[]): { label: string; value: T }[] {
   return values.map((value) => ({
