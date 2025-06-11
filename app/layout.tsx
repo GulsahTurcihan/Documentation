@@ -39,25 +39,23 @@ export default async function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <FormProvider>
-            <SidebarProvider defaultOpen={defaultOpen}>
-              <AsideProvider>
-                <div className="relative min-h-screen flex flex-col w-full">
-                  <Navbar />
-                  <div className="flex flex-auto w-full">
-                    {/* Sidebar */}
-                    <AppSidebar />
+          <SidebarProvider defaultOpen={defaultOpen}>
+            <AsideProvider>
+              <div className="relative min-h-screen flex flex-col w-full">
+                <Navbar />
+                <div className="flex flex-auto w-full">
+                  {/* Sidebar */}
+                  <AppSidebar />
 
-                    <SidebarTrigger className="hidden sticky top-0 md:block lg:block ml-3 mr-2 mt-0" />
+                  <SidebarTrigger className="hidden sticky top-0 md:block lg:block ml-3 mr-2 mt-0" />
 
-                    <main className="rounded-lg border border-sidebar-border shadow-sm pt-10 lg:mb-12 md:ml-2 lg:mr-32 lg:ml-28 md:m-2">
-                      <Provider>{children}</Provider>
-                    </main>
-                  </div>
+                  <main className="rounded-lg border border-sidebar-border shadow-sm pt-10 lg:mb-12 md:ml-2 lg:mr-32 lg:ml-28 md:m-2">
+                    <Provider>{children}</Provider>
+                  </main>
                 </div>
-              </AsideProvider>
-            </SidebarProvider>
-          </FormProvider>
+              </div>
+            </AsideProvider>
+          </SidebarProvider>
         </body>
       </ClerkProvider>
     </html>

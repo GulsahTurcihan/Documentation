@@ -13,9 +13,18 @@ import {
 import { useAsideContext } from "@/app/provider";
 
 function LanguageButtons() {
-  const [windowWidth, setWindowWidth] = useState<number>(
-    typeof window !== "undefined" ? window.innerWidth : 1440
-  );
+  const [windowWidth, setWindowWidth] = useState<number>(1440);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true); //Render’ı client render’a kadar durdurmak için isMounted
+    setWindowWidth(window.innerWidth);
+
+    const handleResize = () => setWindowWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Context'i her durumda ve koşulsuz olarak çağır.
   const asideContext = useAsideContext();
@@ -38,6 +47,8 @@ function LanguageButtons() {
     setSelectedLanguage(language);
     console.log("Selected Language:", language);
   };
+
+  if (!isMounted) return null; // SSR sırasında render etme
 
   const visibleIcons =
     windowWidth < 1600 ? languageIcons.slice(0, 3) : languageIcons.slice(0, 5);
